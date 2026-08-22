@@ -1,0 +1,102 @@
+### Python ###
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Type checkers / linters
+.mypy_cache/
+.ruff_cache/
+
+# Environment / secrets
+.env
+.env.local
+*.pem
+*.key
+config/secrets.yaml
+
+### MATLAB ###
+# Autosave files
+*.asv
+*.m~
+
+# Simulink cache / code-gen
+slprj/
+codegen/
+*.slxc
+
+# MATLAB compiled files
+*.mex*
+
+# MATLAB temp/backup
+*.autosave
+
+### Data & large files (adjust as needed) ###
+*.mat
+*.csv
+*.h5
+*.hdf5
+*.pkl
+*.npy
+*.npz
+data/raw/
+data/processed/
+!data/sample/
+
+### IDE / editors ###
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+### Logs & outputs ###
+*.log
+logs/
+outputs/
+results/
+!outputs/.gitkeep
+!results/.gitkeep
+
+### Model checkpoints (AI/ML projects) ###
+*.pt
+*.pth
+*.ckpt
+*.h5
+checkpoints/
+wandb/
+mlruns/
