@@ -26,7 +26,7 @@ RL-based Friend recommendation/
 ├── src/
 │   └── main.py              # environment, DQN model, training loop, evaluation, plots
 ├── data/
-│   └── sample/               # small sample graph (e.g. dolphins.gml) — optional
+│   └── yelp.txt/               # small sample graph (e.g. dolphins.gml) — optional
 ├── outputs/                   # generated plots (git-ignored, created at runtime)
 ├── requirements.txt
 └── README.md
@@ -60,7 +60,7 @@ These bugs were present in the first draft and have since been fixed (verified w
 
 - **Reward function's "mixed result" case returned the same +1 as a full improvement.** Now returns `0.5`, so partial and full improvements are distinguishable in the training signal.
 - **Tensor shape mismatch warning during loss computation** (target vs. prediction shapes didn't match, causing incorrect broadcasting). Fixed by aligning both to scalar tensors.
-- **Hardcoded Google Colab path** replaced with a `--graph` CLI argument, and the loader now supports both `.gml` files and plain edge-list `.txt` files (e.g. `dolphins.txt`).
+- **Hardcoded Google Colab path** replaced with a `--graph` CLI argument, and the loader now supports both `.gml` files and plain edge-list `.txt` files (e.g. `yelp.txt`).
 
 **Verified working**: the full pipeline (`src/main.py`) was run end-to-end on a small test graph with no errors and no warnings, producing all 6 output plots correctly.
 
