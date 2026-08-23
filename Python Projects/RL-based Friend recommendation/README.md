@@ -26,7 +26,7 @@ RL-based Friend recommendation/
 ├── src/
 │   └── main.py              # environment, DQN model, training loop, evaluation, plots
 ├── data/
-│   └── sample/               # small sample graph (e.g. dolphins.gml) — optional
+│   └── yelp.txt/               # small sample graph (e.g. dolphins.gml) — optional
 ├── outputs/                   # generated plots (git-ignored, created at runtime)
 ├── requirements.txt
 └── README.md
@@ -52,17 +52,15 @@ Key CLI options (all optional, sensible defaults included):
 | `--lr` | 0.001 | Learning rate |
 | `--output-dir` | `outputs` | Where plots are saved |
 
-**Outputs** (saved as PNGs in `outputs/`): accuracy/precision/recall/F1 trend plots, per-epsilon reward trends, and Q-value trends across episodes.
+**Outputs** (saved as PNGs in `outputs/`): accuracy trend plots, per-epsilon reward trends, and Q-value trends across episodes.
 
 ## Fixes applied to the original vibe-coded version
 
 These bugs were present in the first draft and have since been fixed (verified with a test run — see below):
 
-- **`recall` was actually computing specificity** (`tn / (tn + fp)`). Fixed to the standard `tp / (tp + fn)`, which also corrects the derived F1 score.
-- **Modularity was a hardcoded placeholder** (`0.0` for every node). Replaced with a real per-node proxy: the fraction of each node's edges that stay within its own community, detected via `networkx`'s greedy modularity communities. This is still a simplification of formal per-node modularity contribution, but it now actually varies with graph structure.
 - **Reward function's "mixed result" case returned the same +1 as a full improvement.** Now returns `0.5`, so partial and full improvements are distinguishable in the training signal.
 - **Tensor shape mismatch warning during loss computation** (target vs. prediction shapes didn't match, causing incorrect broadcasting). Fixed by aligning both to scalar tensors.
-- **Hardcoded Google Colab path** replaced with a `--graph` CLI argument, and the loader now supports both `.gml` files and plain edge-list `.txt` files (e.g. `dolphins.txt`).
+- **Hardcoded Google Colab path** replaced with a `--graph` CLI argument, and the loader now supports both `.gml` files and plain edge-list `.txt` files (e.g. `yelp.txt`).
 
 **Verified working**: the full pipeline (`src/main.py`) was run end-to-end on a small test graph with no errors and no warnings, producing all 6 output plots correctly.
 
@@ -77,6 +75,4 @@ These bugs were present in the first draft and have since been fixed (verified w
 - Add a baseline (e.g. common-neighbors or Adamic-Adar link prediction) to compare against the RL agent
 - Track train/test performance over time to check for overfitting on small graphs
 
-## License
 
-MIT
