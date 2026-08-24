@@ -1,0 +1,324 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "درخواست نگارش نامه اداری",
+        "formDescription": "لطفاً اطلاعات لازم برای تولید پیش‌نویس نامه را وارد کنید.\n",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "فرستنده",
+              "fieldName": "sender",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "گیرنده",
+              "fieldName": "receiver",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "موضوع",
+              "fieldName": "subject",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "نکات اصلی",
+              "fieldName": "key_points",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "لحن نامه",
+              "fieldType": "dropdown",
+              "fieldName": "tone",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "خیلی رسمی"
+                  },
+                  {
+                    "option": "رسمی"
+                  },
+                  {
+                    "option": "محترمانه"
+                  },
+                  {
+                    "option": "اداری کوتاه"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "تولید پیش‌نویس نامه",
+          "path": "letter-draft"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "eaaa9f76-de39-43c2-ba8e-0edee54b2e87",
+      "name": "On form submission",
+      "webhookId": "c47cafb2-b434-44bb-a955-a6b17f30c2b5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=شما کارشناس حرفه‌ای مکاتبات اداری فارسی هستید.\n\nبر اساس اطلاعات زیر، یک پیش‌نویس نامه اداری فارسی، منسجم، مودبانه و آماده ارسال تولید کنید.\n\nاطلاعات:\n- فرستنده: {{ $json.sender }}\n- گیرنده: {{ $json.receiver }}\n- موضوع: {{ $json.subject }}\n- نکات اصلی: {{ $json.key_points }}\n- لحن موردنظر: {{ $json.tone }}\n\nقواعد:\n1. فقط به فارسی بنویس.\n2. لحن نامه باید با «لحن موردنظر» سازگار باشد.\n3. نامه شامل خطاب محترمانه، متن اصلی، درخواست یا جمع‌بندی روشن و امضا باشد.\n4. اطلاعاتی خارج از داده‌های ورودی جعل نکن.\n5. فقط متن نهایی نامه را بده؛ تحلیل، توضیح، Markdown یا تیتر اضافی نده.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "53f4508a-5be2-413e-8c91-5a520de4b739",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "maxTokens": 800,
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        448
+      ],
+      "id": "333e38fa-85c7-49d3-aafc-f67aa0a3353b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "AASUF0XQU9U83tYT",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "متن نامه را بررسی و در مورد تأیید یا اصلاح آن تصمیم بگیرید.",
+              "fieldType": "radio",
+              "fieldName": "decision",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "تایید"
+                  },
+                  {
+                    "option": "اصلاح"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "اصلاح مورد نیاز ",
+              "fieldType": "textarea",
+              "fieldName": "revision_note"
+            }
+          ]
+        },
+        "options": {
+          "formTitle": "پیش بنویس نامه اداری",
+          "formDescription": "=متن نامه را بررسی بفرمایید\n\n{{ $json.text }}"
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        592,
+        48
+      ],
+      "id": "16453cb1-4fee-4273-8eb8-d1aefb981dd7",
+      "name": "Form",
+      "webhookId": "7590d532-b5bb-46db-8c87-510026e7572d"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "35dcec13-2558-4b9f-96c4-8494de959b79",
+              "leftValue": "={{ $json.decision }}",
+              "rightValue": "تأیید",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        816,
+        48
+      ],
+      "id": "e8a21b81-50a2-4614-9606-5aae099566a1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=شما کارشناس حرفه‌ای مکاتبات اداری فارسی هستید.\n\nمتن زیر یک پیش‌نویس نامه اداری است که باید بر اساس نظر کاربر بازنویسی شود.\n\nمتن فعلی نامه:\n{{ $json.text }}\n\nتوضیحات اصلاح کاربر:\n{{ $json.revision_note }}\n\nقواعد:\n1. فقط متن نهایی نامه را بده.\n2. لحن باید رسمی و اداری بماند.\n3. فقط همان بخش‌هایی را اصلاح کن که کاربر خواسته است.\n4. اطلاعات جدید جعل نکن.\n5. تحلیل، توضیح یا Markdown نده.\n",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        768,
+        304
+      ],
+      "id": "c2caf582-dcef-4b3d-8d87-0d6342cd9ddd",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2ee124d7-34eb-4a45-ba3c-ed2120564596",
+              "name": "=html_content",
+              "value": "=<html lang=\"fa\" dir=\"rtl\"> <head>   <meta charset=\"UTF-8\">   <style>     @page {       size: A4;       margin: 2cm;     }      body {       direction: rtl;       text-align: right;       font-family: Tahoma, Arial, sans-serif;       font-size: 14px;       line-height: 2;       color: #000;       background: #fff;     }      .letter {       width: 100%;     }      .title {       text-align: center;       font-size: 18px;       font-weight: bold;       margin-bottom: 30px;     }      .content {       white-space: pre-wrap;     }   </style> </head> <body>   <div class=\"letter\">     <div class=\"title\">نامه اداری</div>     <div class=\"content\">{{ $json.text }}</div>   </div> </body> </html>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1040,
+        -48
+      ],
+      "id": "a6123c7b-492b-427a-8204-ef164e5abe1e",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c20c6e62-c10d-444c-b14c-ac966c3b1ed9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c6d27d227aa98a5bc2260a6fce650a0b8e407b1922455b7f26fd4c7bc60d7ab"
+  },
+  "nodeGroups": [],
+  "id": "l0rfGXWz9PAHLE9a",
+  "tags": []
+}
