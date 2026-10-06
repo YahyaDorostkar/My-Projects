@@ -7,9 +7,13 @@ The proposed framework integrates shallow neural networks with classical machine
 Dataset Information
 The experiments utilize the UCI Heart Disease dataset, a well-established benchmark in medical decision support systems.
 •	Repository: UCI Machine Learning Repository
-•	Dataset name: Heart Disease Dataset
-•	URL: https://archive.ics.uci.edu/ml/datasets/Heart+Disease
-The dataset contains clinical and demographic attributes related to cardiovascular conditions. All numerical attributes are standardized prior to model training. The target variable represents the presence or absence of heart disease.
+•	The datasets analyzed for this study can be found in the Kaggle repository. Heart Disease Dataset, available at:
+https://www.kaggle.com/datasets/sukhmandeepsinghbrar/heart-attack-dataset
+https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset
+https://www.kaggle.com/datasets/prokashbarmancu/iomt-alert
+https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset.
+
+The datasets contains clinical and demographic attributes related to cardiovascular conditions. All numerical attributes are standardized prior to model training. The target variable represents the presence or absence of heart disease.
 Code Information
 The codebase is organized as a single executable Python script that implements the full experimental pipeline, including data preprocessing, model training, evaluation, and visualization.
 Implemented Models
