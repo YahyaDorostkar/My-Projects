@@ -13,7 +13,7 @@ https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset
 https://www.kaggle.com/datasets/prokashbarmancu/iomt-alert
 https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset.
 
-The datasets contains clinical and demographic attributes related to cardiovascular conditions. All numerical attributes are standardized prior to model training. The target variable represents the presence or absence of heart disease.
+The datasets contain clinical and demographic attributes related to cardiovascular conditions. All numerical attributes are standardized prior to model training. The target variable represents the presence or absence of heart disease.
 Code Information
 The codebase is organized as a single executable Python script that implements the full experimental pipeline, including data preprocessing, model training, evaluation, and visualization.
 Implemented Models
