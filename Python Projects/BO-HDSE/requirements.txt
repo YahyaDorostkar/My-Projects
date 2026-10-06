@@ -1,0 +1,11 @@
+# Recommended Python version: 3.11
+numpy
+pandas
+matplotlib
+scipy
+scikit-learn
+optuna
+lightgbm
+xgboost
+catboost
+tensorflow
